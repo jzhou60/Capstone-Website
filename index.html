@@ -29,19 +29,19 @@
 	<div class="collapse navbar-collapse" id="navbarResponsive">
 		<ul class="navbar-nav ml-auto">
 			<li class="nav-item">
-				<a class="nav-link" href="#">Home</a>
+				<a class="nav-link" href="#home">Home</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="#">Problems</a>
+				<a class="nav-link" href="#problems">Problems</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="#">Results</a>
+				<a class="nav-link" href="#">Analysis</a>
 			</li>
 			<li class="nav-item">
 				<a class="nav-link" href="#">Team</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="#">Connect</a>
+				<a class="nav-link" href="#connect">Connect</a>
 			</li>
 		</ul>
 	</div>
@@ -50,6 +50,7 @@
 
 
 <!--- Image Slider -->
+<div id="home">
 <div id="slides" class="carousel slide" data-ride="carousel">
 	<div class="carousel-inner">
 		<div class="carousel-item active">
@@ -59,49 +60,260 @@
 				<h3>Pattern and Anomaly Detection in Urban Temporal Networks</h3>
 				<h5>Organization: NYU CUSP & Lockheed Martin</h5>
 				<h5>Sponsor: Stan Sobolevsky & Sergey Malinchik</h5>
-				<button type="button" class="btn btn-primary btn-lg">Get Started</button>
+				<a href="#problems" class="btn btn-primary btn-lg" role="button">Get Started</a>
 			</div>
 		</div>
 	</div>
 </div>
-
+</div>
 
 <!--- Problem Section -->
-<div class="container-fluid padding">
+<div class="container padding" id="problems">
 <div class="row welcome text-center">
 	<div class="col-12">
-		<h1 class="display-4">Problem Statements</h1>
+		<h2>Problem Statements</h1>
 	</div>
 	<hr>
-	<div class="col-12">
-		<p class="lead">Problem Statements here</p>
-		<p class="lead">To develop a generic approach for system-level anomaly detection in urban temporal networks and evaluate it for anomaly and threat detection in urban mobility. As opposed to approaches that identify individual anomalous data points, a subset of anomalous data points, or use crude aggregation; our approach should be able to account for the spatial and topological structure of the urban mobility network, and capture the emergent local phenomena at different spatial scales as well as the structural patterns emerging in the networked data.</p>
+	<div class="col-12 text-center lead">
+		A large array of urban activities including mobility can be modeled as networks evolving over time. These networks                  
+potentially capture the changes in urban dynamics caused by events like strikes and weather extremities, but                
+identification of these events from temporal networks is a challenging problem and we intend to address it in this                   
+research. Our approach is a topological aggregation of the network followed by dimensionality reduction using               
+representation learning, enabling the application of standard outlier detection to low dimensional representation             
+space. We will evaluate the methodology by its ability to identify specific urban events. We expect our research to                   
+produce a methodology for anomaly detection in temporal networks of urban mobility that outperforms the legacy                
+techniques and is generalizable to different types of temporal networks. Our motivations to pursue this problem is                 
+our belief that such a system can be used in early detection of potentially unsafe developments and enable a timely                    
+response.
 	</div>
 </div>
+<hr class="my-4">
+</div>
+
+<!--- Jumbotron -->
+<div class="container">
+<div class="row jumbotron">
+	<div class="col-12">
+		<blockquote>
+			<i class="fas fa-quote-left"></i>
+			<p style="font-size:23px;"> The project aims to develop a generic approach for anomaly detection in temporal networks and evaluate it for event detection in urban mobility networks.</p>
+		</blockquote>
+	</div>
+</div>
+<hr class="my-4">
 </div>
 
 <!--- Data Section -->
 <div class="container-fluid padding">
 <div class="row text-center padding">
+	<div class="col-12">
+		<h2>Data</h2>
+	</div>
+	<hr>
+	<div class="col-12">
+		<button type="button" class="btn btn-outline-info btn-lg" data-toggle="collapse" data-target="#hide">Urban Mobility Data</button>
+	</div>
+	<div id="hide" class="collapse in text-center">
+		<div class="col-12 bg-light">The urban mobility datasets were collected for multiple cities, including taxi ridership datasets for New York (USA), Washington DC (USA) and Chicago (USA), and subway ridership data for Taipei (Taiwan). We aggregated all these datasets at the day level and transformed them into a convenient uniform format.The summary of the aggregated mobility datasets is listed below.</div>
+	</div>
+</div>
+</div>
+
+<div class="container-fluid padding">
+<div class="row text-center padding">
 	<div class="col-xs-12 col-sm-6 col-md-3">
-		<i class="fab fa-code"></i>
+		<img src="img/chicago.png" height="250" width="250">
+		<h3></h3>
 		<h3>Chicago</h3>
-		<p>Chicago Taxi Zones</p>
+		<h5>943 Days</h5>
+		<h6>77 Taxi Zones</h6>
 	</div>
 	<div class="col-xs-12 col-sm-6 col-md-3">
-		<i class="fab fa-code"></i>
+		<img src="img/NY.png" height="250" width="250">
+		<h3></h3>
 		<h3>New York</h3>
-		<p>New York Taxi Zones</p>
+		<h5>729 Days</h5>
+		<h6>263 Taxi Zones</h6>
 	</div>
 	<div class="col-xs-12 col-sm-6 col-md-3">
-		<i class="fab fa-code"></i>
+		<img src="img/Washington.png" height="250" width="250">
+		<h3></h3>
 		<h3>Washignton</h3>
-		<p>Washignton Taxi Zones</p>
+		<h5>730 Days</h5>
+		<h6>96 Taxi Zones</h6>
 	</div>
 	<div class="col-xs-12 col-sm-6 col-md-3">
-		<i class="fab fa-code"></i>
+		<img src="img/Taipei.png" height="250" width="250">
+		<h3></h3>
 		<h3>Taipei</h3>
-		<p>Taipei Subway Stations</p>
+		<h5>637 Days</h5>
+		<h6>108 Subway Stations</h6>
+	</div>
+</div>
+</div>
+
+<div class="container padding">
+<div class="row text-center padding">
+	<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-2">
+		<h3>Data Summary</h3>
+	</div>
+	<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 col-xl-10">
+		<table class="table table-hover bg-light">
+		  <thead>
+		    <tr>
+		      <th scope="col">City</th>
+		      <th scope="col">No. of Temporal Points</th>
+		      <th scope="col">Total Ridership Collected</th>
+		      <th scope="col">Average Ridership (per station per day)</th>
+		      <th scope="col">Total Number of Nodes (Stations/ Taxi Zones)</th>
+		      <th scope="col">Total Number of Edges</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		    <tr>
+		      <th scope="row">Chicago Taxi</th>
+		      <td>943</td>
+		      <td>14919326</td>
+		      <td>282</td>
+		      <td>77</td>
+		      <td>1015</td>
+		    </tr>
+		    <tr>
+		      <th scope="row">Washington DC Taxi</th>
+		      <td>730</td>
+		      <td>19062827</td>
+		      <td>508</td>
+		      <td>96</td>
+		      <td>3668</td>
+		    </tr>
+		    <tr>
+		      <th scope="row">Taipei Subway</th>
+		      <td>637</td>
+		      <td>1307013573</td>
+		      <td>18969</td>
+		      <td>108</td>
+		      <td>11664</td>
+		    </tr>
+		    <tr>
+		      <th scope="row">New York Taxi</th>
+		      <td>729</td>
+		      <td>540472732</td>
+		      <td>2815</td>
+		      <td>263</td>
+		      <td>65792</td>
+		    </tr>
+		  </tbody>
+		</table>
+	</div>
+</div>
+</div>
+
+<div class="container-fluid padding">
+<div class="row text-center padding">
+	<div class="col-12">
+		<button type="button" class="btn btn-outline-info btn-lg" data-toggle="collapse" data-target="#hide">Events Data</button>
+	</div>
+	<div id="hide" class="collapse in text-center">
+		<div class="col-12 bg-light">Events that are global in nature can be identified relatively easily by just using the legacy methods like aggregated time                    
+series analysis, as the impact of these events can be seen across the entire network. The challenging problem we                   
+want to address using this study is to detect events that are local in nature yet are significant enough to impact the                      
+ridership in the overall network. To benchmark the efficacy of our method in detecting events where the legacy                  
+methods perform well, and to detect events of our interest as mentioned before, we have selected a set of global and                     
+3 
+
+ significant local events for this study. The different types of events we have considered are National Holidays, Cultural                  
+Events, Parades, Protests, and Extreme Weather. The details and summary statistics for these datasets are present in                 
+Appendix D
+​ . The weather datasets were further processed to detect extreme weather conditions from weather               
+readings. Days having temperature or precipitation, above or below the threshold (1%) have been marked as extreme                 
+weather condition. For temperature, we also marked those days that are above or below 2 standard deviations from                  
+the rolling average of the last 10 days as local extreme weather condition. The summary of the aggregated events data                    is presented below.</div>
+	</div>
+
+	<div class="col-xs-12 col-sm-6 col-md-3">
+		<img src="img/event1.png" width="300" height="162" style="border-radius:8px">
+		<h3></h3>
+		<h3>National Holiday</h3>
+	</div>
+	<div class="col-xs-12 col-sm-6 col-md-3">
+		<img src="img/event2.png" width="300" height="162" style="border-radius:8px">
+		<h3></h3>
+		<h3>Culture Event</h3>
+	</div>
+	<div class="col-xs-12 col-sm-6 col-md-3">
+		<img src="img/event3.png" width="300" height="162" style="border-radius:8px">
+		<h3></h3>
+		<h3>Extreme Weather</h3>
+	</div>
+	<div class="col-xs-12 col-sm-6 col-md-3">
+		<img src="img/event4.png" width="300" height="162" style="border-radius:8px">
+		<h3></h3>
+		<h3>Natural Disaster</h3>
+	</div>
+</div>
+</div>
+
+<div class="container padding">
+<div class="row text-center padding">
+	<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-2">
+		<h3>Data Summary</h3>
+	</div>
+	<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 col-xl-10">
+		<table class="table table-hover bg-light">
+		  <thead>
+		    <tr>
+		      <th scope="col">City</th>
+		      <th scope="col">Extreme Weather</th>
+		      <th scope="col">National Holiday</th>
+		      <th scope="col">Culture Event</th>
+		      <th scope="col">Natural Disaster</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		    <tr>
+		      <th scope="row">Chicago</th>
+		      <td>42</td>
+		      <td>10</td>
+		      <td>4</td>
+		      <td>0</td>
+		    </tr>
+		    <tr>
+		      <th scope="row">Washington DC</th>
+		      <td>43</td>
+		      <td>41</td>
+		      <td>46</td>
+		      <td>0</td>
+		    </tr>
+		    <tr>
+		      <th scope="row">Taipei</th>
+		      <td>58</td>
+		      <td>30</td>
+		      <td>5</td>
+		      <td>5</td>
+		    </tr>
+		    <tr>
+		      <th scope="row">New York cITY</th>
+		      <td>49</td>
+		      <td>21</td>
+		      <td>18</td>
+		      <td>0</td>
+		    </tr>
+		  </tbody>
+		</table>
+	</div>
+
+	<div class="col-12">
+		<button type="button" class="btn btn-outline-info btn-lg" data-toggle="collapse" data-target="#hide">Synthetic Data</button>
+	</div>
+	<div id="hide" class="collapse in text-center">
+		<div class="col-12 bg-light">We created synthetic data primarily for two reasons. 1) to inject artificial anomalies of different kinds for diagnosing the                   
+models 2) to generate large volumes of data to enable training of deep auto-encoder. Since the data has strong                   
+correlations we could not fit distributions and sample independently for each column. So we performed PCA to extract                  
+independent latent variables and fitted Gaussian distributions on these variables. Data was then created by sampling                
+from these distributions and using inverse PCA to transform data back into the network domain. Finally, following types                  
+of anomalies were injected in the network domain; 1) global anomalies where the entire network witnesses a shift in                   
+the ridership 2) balanced anomalies where some portions of the network experience shifts in ridership but the                 
+aggregated ridership is not affected on average.</div>
 	</div>
 </div>
 <hr class="my-4">
@@ -111,24 +323,50 @@
 <div class="container-fluid padding">
 <div class="row welcome text-center">
 	<div class="col-12">
-		<h1 class="display-4">Results</h1>
+		<h2>Analysis</h1>
 	</div>
 	<hr>
 	<div class="col-12">
-		<p class="lead">Put results plot here</p>
+		<a href="analysis.html"><button type="button" class="btn btn-outline-info btn-lg">Click to See More</button></a>
 	</div>
 </div>
 <hr class="my-4">
 </div>
 
+<!--- Sponsors -->
+<div class="container-fluid padding">
+<div class="row text-center padding">
+	<div class="col-12">
+		<h2>Our Sponsors</h2>
+	</div>
+	<div class="col-3"></div>
+	<div class="col-3">
+		<img src="img/logo-large.png" width="300" height="49">
+	</div>
+	<div class="col-3">
+		<img src="img/LM-logo.png" width="300" height="81">
+	</div>
+	<div class="col-3"></div>
+</div>
+</div>
+
+<!--- Acknowledgement -->
+<div class="container">
+<div class="row welcome text-center">
+	<div class="col-12">
+		<h2>Acknowledgement</h2>
+		<p>We'd like to thank Prof. Stanislav Sobolevsky who provided guidance and assistance througout the whole project.</p>
+	</div>
+</div>
+</div>
+<br>
   
 <!--- Meet the team -->
 <div class="container-fluid padding">
 <div class="row welcome text-center">
 	<div class="col-12">
-		<h1 class="display-4">Meet the Team</h1>
+		<h2>Meet the Team</h1>
 	</div>
-	<hr>
 </div>
 </div>
 
@@ -148,11 +386,11 @@
 
 	<div class="col-md-4">
 		<div class="card">
-			<img src="img/prof.jpg" class="card-img-top">
+			<img src="img/prof.jpg" class="card-img-top" width="500" height="500" style="border-radius:50%">
 			<div class="card-body">
 				<h4 class="card-title">Stan Sobolevsky</h4>
 				<p class="card-text">Sponsor and head coach</p>
-				<a href="#" class="btn btn-outline-secondary">See Profile</a>
+				<a href="https://scholar.google.com/citations?user=bhlEzAcAAAAJ" class="btn btn-outline-secondary">See Profile</a>
 			</div>
 		</div>
 	</div>
@@ -181,7 +419,7 @@
 
 	<div class="col-md-4">
 		<div class="card">
-			<img src="img/team1.png" class="card-img-top">
+			<img src="img/ryan.png" class="card-img-top" width="500" height="500" style="border-radius:50%">
 			<div class="card-body">
 				<h4 class="card-title">Jingtian Zhou</h4>
 				<p class="card-text">Data Wizard</p>
@@ -206,10 +444,11 @@
 
 
 <!--- Connect -->
+<div id="connect">
 <div class="container-fluid padding">
 <div class="row text-center padding">
 	<div class="col-12">
-		<h2>Connect</h2>
+		<h2>Connect Us</h2>
 	</div>
 	<div class="col-12 social padding">
 		<a href="cusp.nyu.edu"><i class="fab fa-facebook"></i></a>
@@ -220,15 +459,24 @@
 	</div>
 </div>
 </div>
+</div>
+
+<div class="container">
+	<div class="col-12 text-center">
+		<a href="#home" class="btn btn-outline-danger">Back to Top</a>
+	</div>
+</div>
 
 <!--- Footer -->
 <footer>
 <div class="container-fluid padding">
 <div class="row text-center">
-	
+	<div class="col-12">
+		<img src="img/CUSP-Logo-BW.png" width="300" height="49.2">
+	</div>
 	<div class="col-12">
 		<hr class="light">
-		<h5>&copy; NYU CUSP</h5>
+		<h5>Copyright &copy; 2019 All rights reserved</h5>
 	</div>
 </div>
 </div>
