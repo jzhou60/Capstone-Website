@@ -62,7 +62,7 @@
 				<h2>Problem Statements</h1>
 			</div>
 			<hr>
-			<div class="col-12 text-center lead">
+			<div class="col-12 text-center lead" align="left">
 				A large array of urban activities including mobility can be modeled as networks evolving over time. These networks                  
 				potentially capture the changes in urban dynamics caused by events like strikes and weather extremities, but                
 				identification of these events from temporal networks is a challenging problem and we intend to address it in this                   
@@ -142,10 +142,11 @@
 						</div>
 					</div>
 					<div class="row text-center mx-3">
-						<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-2">
+<!-- 						<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-2">
 							<h3>Data Summary</h3>
-						</div>
-						<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 col-xl-10">
+						</div> -->
+						<div class="container col-xs-12 col-sm-12 col-md-9 col-lg-9 col-xl-10">
+							<h3>Data Summary</h3>
 							<table class="table table-hover bg-light">
 							  <thead>
 							    <tr>
@@ -195,10 +196,11 @@
 						</div>
 					</div>
 					<div class="row text-center mx-3">
-						<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-2">
+<!-- 						<div class="container col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-2">
 							<h3>Data Source</h3>
-						</div>
-						<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 col-xl-10">
+						</div> -->
+						<div class="container col-xs-12 col-sm-12 col-md-9 col-lg-9 col-xl-10">
+							<h3>Data Source</h3>
 							<table class="table table-hover bg-light">
 							  <thead>
 							    <tr>
@@ -271,10 +273,11 @@
 						</div>
 					</div>
 					<div class="row text-center mx-3">
-						<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-2">
+<!-- 						<div class="container col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-2">
 							<h3>Data Summary</h3>
-						</div>
-						<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 col-xl-10">
+						</div> -->
+						<div class="container col-xs-12 col-sm-12 col-md-9 col-lg-9 col-xl-10">
+							<h3>Data Summary</h3>
 							<table class="table table-hover bg-light">
 							  <thead>
 							    <tr>
@@ -314,10 +317,11 @@
 						</div>
 					</div>
 					<div class="row text-center mx-3">
-						<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-2">
+<!-- 						<div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 col-xl-2">
 							<h3>Data Source of the Weather Data</h3>
-						</div>
-						<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9 col-xl-10">
+						</div> -->
+						<div class="container col-xs-12 col-sm-12 col-md-9 col-lg-9 col-xl-10">
+							<h3>Weather Data Source</h3>
 							<table class="table table-hover bg-light">
 							  <thead>
 							    <tr>
@@ -353,16 +357,18 @@
 					</div>
 				</div>
 				<div class="collapse" id="collapse-3">
-					<div class="col-6 bg-light mx-auto">
-						<p>We created synthetic data primarily for two reasons.</p>
-						<p>1) to inject artificial anomalies of different kinds for diagnosing the                   
-						models 2) to generate large volumes of data to enable training of deep auto-encoder. Since the data has strong                   
+					<div class="col-6 bg-light mx-auto" align="left">
+						<p> We created synthetic data primarily for two reasons.</p>
+						<p> &#9658 To inject artificial anomalies of different kinds for diagnosing the models. </p>                  
+						<p> &#9658 To generate large volumes of data to enable training of deep auto-encoder. 
+						<p>	Since the data has strong                   
 						correlations we could not fit distributions and sample independently for each column. So we performed PCA to extract                  
 						independent latent variables and fitted Gaussian distributions on these variables. Data was then created by sampling                
 						from these distributions and using inverse PCA to transform data back into the network domain. Finally, following types                  
-						of anomalies were injected in the network domain; 1) global anomalies where the entire network witnesses a shift in                   
-						the ridership 2) balanced anomalies where some portions of the network experience shifts in ridership but the                 
-						aggregated ridership is not affected on average.</p>
+						of anomalies were injected in the network domain; 
+						<p> &#9658 Global anomalies where the entire network witnesses a shift in the ridership. </p>
+						<p> &#9658 Balanced anomalies where some portions of the network experience shifts in ridership but the                 
+						aggregated ridership is not affected on average. </p>
 					</div>
 				</div>
 			</div>
@@ -384,8 +390,14 @@
 				<img src="img/pipeline.png" class="img-fluid">
 			</div>
 			<div class="col-12">
-				<a href="analysis.html"><button type="button" class="btn btn-outline-info btn-lg">Click to See More Analysis</button></a>
+				<a href="Taipei.html"><button type="button" class="btn btn-outline-info btn-lg">Taipei</button></a>
+				<a href="DC.html"><button type="button" class="btn btn-outline-info btn-lg">Washington DC</button></a>
+				<a href="NewYork.html"><button type="button" class="btn btn-outline-info btn-lg">New York</button></a>
+				<a href="Chicago.html"><button type="button" class="btn btn-outline-info btn-lg">Chicago</button></a>
 			</div>
+<!-- 			<div class="col-12">
+				<a href="analysis.html"><button type="button" class="btn btn-outline-info btn-lg">Click to See More Analysis</button></a>
+			</div> -->
 		</div>
 		<hr class="my-4">
 	</div>
@@ -453,86 +465,86 @@
 		<div class="row">
 			<div class="col-sm-4 text-center">
 				<div class="team-member">
-					<img src="img/prof.jpg" class="mx-auto rounded-circle">
+					<img src="img/urwa.jpeg" class="mx-auto rounded-circle" height="200" width="200">
 					<h4>Urwa Muaz</h4>
 					<p class="text-muted">Writeup Owner</p>
 					<ul class="list-inline">
 						<li class="list-inline-item">
-							<a href="#"><i class="fab fa-github" style="font-size:36px;color: #444444;"></i></a>
+							<a href="https://github.com/muaz-urwa"><i class="fab fa-github" style="font-size:36px;color: #444444;"></i></a>
 						</li>
 						<li class="list-inline-item">
-							<a href="#"><i class="fab fa-linkedin-in" style="font-size:36px;color: #007bb6;"></i></a>
+							<a href="https://www.linkedin.com/in/urwa-muaz-5613b3104/"><i class="fab fa-linkedin-in" style="font-size:36px;color: #007bb6;"></i></a>
 						</li>
 					</ul>
 				</div>
 			</div>
 			<div class="col-sm-4 text-center">
 				<div class="team-member">
-					<img src="img/prof.jpg" class="mx-auto rounded-circle">
+					<img src="img/prof.jpg" class="mx-auto rounded-circle" height="200" width="200">
 					<h4>Prof. Stan</h4>
 					<p class="text-muted">Sponsor and head coach</p>
 					<ul class="list-inline">
 						<li class="list-inline-item">
-							<a href="#"><i class="fab fa-github" style="font-size:36px;color: #444444;"></i></a>
+							<a href=""><i class="fab fa-github" style="font-size:36px;color: #444444;"></i></a>
 						</li>
 						<li class="list-inline-item">
-							<a href="#"><i class="fab fa-linkedin-in" style="font-size:36px;color: #007bb6;"></i></a>
+							<a href="https://www.linkedin.com/in/sobolevsky/"><i class="fab fa-linkedin-in" style="font-size:36px;color: #007bb6;"></i></a>
 						</li>
 					</ul>
 				</div>
 			</div><div class="col-sm-4 text-center">
 				<div class="team-member">
-					<img src="img/prof.jpg" class="mx-auto rounded-circle">
+					<img src="img/shivam.jpeg" class="mx-auto rounded-circle" height="200" width="200">
 					<h4>Shivam Pathak</h4>
 					<p class="text-muted">Algorithms Pipeline Owner</p>
 					<ul class="list-inline">
 						<li class="list-inline-item">
-							<a href="#"><i class="fab fa-github" style="font-size:36px;color: #444444;"></i></a>
+							<a href="https://github.com/Shivam0712"><i class="fab fa-github" style="font-size:36px;color: #444444;"></i></a>
 						</li>
 						<li class="list-inline-item">
-							<a href="#"><i class="fab fa-linkedin-in" style="font-size:36px;color: #007bb6;"></i></a>
+							<a href="https://www.linkedin.com/in/shivamds/"><i class="fab fa-linkedin-in" style="font-size:36px;color: #007bb6;"></i></a>
 						</li>
 					</ul>
 				</div>
 			</div><div class="col-sm-4 text-center">
 				<div class="team-member">
-					<img src="img/prof.jpg" class="mx-auto rounded-circle">
+					<img src="img/mingyi.jpeg" class="mx-auto rounded-circle" height="200" width="200">
 					<h4>Mingyi He</h4>
 					<p class="text-muted">Logistic Leader</p>
 					<ul class="list-inline">
 						<li class="list-inline-item">
-							<a href="#"><i class="fab fa-github" style="font-size:36px;color: #444444;"></i></a>
+							<a href="https://github.com/Mingyi1995"><i class="fab fa-github" style="font-size:36px;color: #444444;"></i></a>
 						</li>
 						<li class="list-inline-item">
-							<a href="#"><i class="fab fa-linkedin-in" style="font-size:36px;color: #007bb6;"></i></a>
+							<a href="https://www.linkedin.com/in/mingyi-he-939b91171/"><i class="fab fa-linkedin-in" style="font-size:36px;color: #007bb6;"></i></a>
 						</li>
 					</ul>
 				</div>
 			</div><div class="col-sm-4 text-center">
 				<div class="team-member">
-					<img src="img/ryan.png" class="mx-auto rounded-circle">
+					<img src="img/ryan.png" class="mx-auto rounded-circle" height="200" width="200">
 					<h4>Jingtian Zhou</h4>
 					<p class="text-muted">Data Wizard</p>
 					<ul class="list-inline">
 						<li class="list-inline-item">
-							<a href="#"><i class="fab fa-github" style="font-size:36px;color: #444444;"></i></a>
+							<a href="https://github.com/jzhou60"><i class="fab fa-github" style="font-size:36px;color: #444444;"></i></a>
 						</li>
 						<li class="list-inline-item">
-							<a href="#"><i class="fab fa-linkedin-in" style="font-size:36px;color: #007bb6;"></i></a>
+							<a href="https://www.linkedin.com/in/jingtian-zhou-126a05a6/"><i class="fab fa-linkedin-in" style="font-size:36px;color: #007bb6;"></i></a>
 						</li>
 					</ul>
 				</div>
 			</div><div class="col-sm-4 text-center">
 				<div class="team-member">
-					<img src="img/prof.jpg" class="mx-auto rounded-circle">
+					<img src="img/saloni.jpeg" class="mx-auto rounded-circle">
 					<h4>Saloni Saini</h4>
 					<p class="text-muted">Codebase Manager</p>
 					<ul class="list-inline">
 						<li class="list-inline-item">
-							<a href="#"><i class="fab fa-github" style="font-size:36px;color: #444444;"></i></a>
+							<a href="https://github.com/SaloniSaini02"><i class="fab fa-github" style="font-size:36px;color: #444444;"></i></a>
 						</li>
 						<li class="list-inline-item">
-							<a href="#"><i class="fab fa-linkedin-in" style="font-size:36px;color: #007bb6;"></i></a>
+							<a href="https://www.linkedin.com/in/saloni-saini-295471118/"><i class="fab fa-linkedin-in" style="font-size:36px;color: #007bb6;"></i></a>
 						</li>
 					</ul>
 				</div>
