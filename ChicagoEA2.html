@@ -62,14 +62,14 @@
         <div class="col-sm-6" id="distDate">
         <h4 align="left">Select Date </h4>
         <input type="date" id="dateId" name="dateName"
-                 value="2017-01-01"
-                 min="2017-01-01" max="2018-12-31" align="right">
+                 value="2015-01-01"
+                 min="2015-01-01" max="2016-12-31" align="right">
         </div>
         <div class="col-sm-6" id="distDate2">
         <h4 align="left"> Select Date</h4>
         <input type="date" id="dateId2" name="dateName2"
-                 value="2017-01-01"
-                 min="2017-01-01" max="2018-12-31" align="right">
+                 value="2015-01-01"
+                 min="2015-01-01" max="2016-12-31" align="right">
         </div>
     </div>
      <div class="row">
@@ -89,8 +89,8 @@
             <h2 align="center">Communities Network Graph</h2>
         <h4 align="left">Select Date </h4>
       <input type="date" id="dateId3" name="dateName3"
-                     value="2017-01-01"
-                     min="2017-01-01" max="2018-12-31" align="right">
+                     value="2015-01-01"
+                     min="2015-01-01" max="2016-12-31" align="right">
                      
             </div>
             
@@ -148,7 +148,7 @@
       
       x.domain(['Component1','Component2','Component3','Component4','Component5','Component6','Component7','Component8','Component9','Component10','Component11','Component12','Component13','Component14','Component15','Component16']);
       y.domain(d3.extent(data, function(d) { return d.Value; }));
-    var date = parseTime('2017-01-01');
+    var date = parseTime('2015-01-01');
       dataset = data.filter(function(d) {return d.Date.getTime() === date.getTime();});
     console.log(dataset)
       var linePlot = g.append("path")
@@ -302,7 +302,7 @@
       x2.domain(['Component1','Component2','Component3','Component4','Component5','Component6','Component7','Component8','Component9','Component10','Component11','Component12','Component13','Component14','Component15','Component16']);
       //y2.domain(d3.extent(data2, function(d) { return d.Value; }));
     y2.domain([d3.min(data2,function(d){return d.Value}),d3.max(data2,function(d){return d.Value})]);
-    var date = parseTime('2017-01-01');
+    var date = parseTime('2015-01-01');
       dataset3 = data2.filter(function(d) {return d.Date.getTime() === date.getTime();});
     console.log(dataset3)
       var linePlot = g2.append("path")
