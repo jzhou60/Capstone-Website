@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <style type="text/css">
+
+			.line {
+				fill: none;
+				stroke: grey;
+				stroke-width: 0.5;
+			}
+			h1	{
+				color: #999999;
+				font-family: arial, sans-serif;
+				font-weight: bold;
+				margin-top: 0px;
+				margin-bottom: 1px;
+				margin-left: 20px;
+			}
+			.mvAverage {
+				stroke: teal;
+				fill: none;
+				stroke-width: 0.5;
+			}
+			
+			.mvStd 
+			{
+			 stroke : orange;
+			 fill: none;
+			 stroke-width: 0.5;
+			}
+			
+			#infoArea {
+			 margin-top:40px
+			}
+			.Area 
+			{
+			   border: 1px solid black;
+
+			}
+			#distArea {margin-left:40px;
+			           margin-top:50px;
+					   margin-bottom:10px}
+			#distArea2 {
+			           margin-top:50px;
+					   }
+			h4 {
+			color: grey;
+			margin-left : 60px;
+			}
+			#dateId {margin-left:60px}
+			#dateId2 {margin-left:60px}
+			
+			.boundary {stroke: #777;}
+			
+			
+			
+			
+			
+			
+			
+			
+  </style>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+	  <h1 align="center">Chicago Exploratory Analysis</h1>
+      <div class="col-sm-7" id="chartArea">
+      </div>
+	  <div class="col-sm-1" >
+      </div>
+	  <div class="col-sm-3" id="infoArea">
+			  <div class="panel panel-primary">
+			  <div class="panel-heading">Chicago Data</div>
+			  <div class="panel-body">Stations: 56</div>
+			  <div class="panel-body">Events: 61</div>
+			  <div class="panel-body">Time Range: Jan 2015-Dec 2016</div>
+	          </div>
+	  </div>
+	  <div class="col-sm-1">
+      </div> 
+      	  
+            
+			
+			
+	  </div>
+	  <div class="row">
+			  <div class="col-sm-6" id="distHeading">
+			  <h2 align="center"> Inflow Plot</h2>
+			  </div>
+			  <div class="col-sm-6" id="distHeading2">
+			  <h2 align="center"> Outflow Plot</h2>
+			  </div>
+	  </div>
+	  <div class="row">
+			  <div class="col-sm-6" id="distDate">
+			  <h4 align="left">Select Date </h4>
+			  <input type="date" id="dateId" name="dateName"
+							   value="2015-01-01"
+							   min="2015-01-01" max="2016-12-31" align="right">
+			  </div>
+			  <div class="col-sm-6" id="distDate2">
+			  <h4 align="left"> Select Date</h4>
+			  <input type="date" id="dateId2" name="dateName2"
+							   value="2015-01-01"
+							   min="2015-01-01" max="2016-12-31" align="right">
+			  </div>
+	  </div>
+	   <div class="row">
+			  <div class="col-sm-5" id="distArea">
+				 
+			  </div>
+			  <div class = "col-sm-1">
+			  </div>
+			  <div class="col-sm-5" id="distArea2">
+			  </div>
+	  
+      	  
+            
+			
+			
+	  </div>
+	  
+	  </div>
+	  
+<script type="text/javascript">
+
+		//Width and height
+			//var w = 1000;
+			//var h = 400;
+			var w = document.getElementById('chartArea').clientWidth;
+            var h = w /2;
+			var padding = 80;
+			
+			var dataset, xScale, yScale, xAxis, yAxis, line;  //Empty, for now
+
+			//For converting Dates to strings
+			var formatTime = d3.timeFormat("%b %Y");
+            var parseTime = d3.timeParse("%m/%d/%Y");
+			//Function for converting CSV values from strings to Dates and numbers
+			var DateCoverter = function(d) {
+				return {
+					date: parseTime(d.date),  //Make a new Date object for each year + month
+					amount: parseFloat(d.amount),
+					Type: parseFloat(d.Type),
+					MA: parseFloat(d.MA),
+					MS: parseFloat(d.MS)//Convert from string to float
+				};
+			}
+
+			//Load in data
+			d3.csv("Chicago_DateWiseAggregated.csv",DateCoverter, function(data) {
+
+				var dataset = data;
+
+				//Print data to console as table, for verification
+				//console.table(dataset, ["date", "amount","Type","MA","MS"]);
+                //Create scale functions
+				xScale = d3.scaleTime()
+							   .domain([
+									d3.min(dataset, function(d) { return d.date; }),
+									d3.max(dataset, function(d) { return d.date; })
+								])
+							   .range([padding, w-padding]);
+
+				yScale = d3.scaleLinear()
+								.domain([0, d3.max(dataset, function(d) { return d.amount; })])
+								.range([h - padding, 90]);
+
+				//Define axes
+				xAxis = d3.axisBottom()
+						   .scale(xScale)
+						   .ticks(12)
+						   .tickFormat(formatTime);
+
+				//Define Y axis
+				yAxis = d3.axisLeft()
+						   .scale(yScale)
+						   .ticks(10);
+
+				//Define line generator
+				line = d3.line()
+							.defined(function(d) { return d.amount>= 0; })
+							.x(function(d) { return xScale(d.date); })
+							.y(function(d) { return yScale(d.amount); });
+				line2 = d3.line()
+							.defined(function(d) { return d.MA> 0; })
+							.x(function(d) { return xScale(d.date); })
+							.y(function(d) { return yScale(d.MA); });
+				line3 = d3.line()
+							.defined(function(d) { return d.MS> 0; })
+							.x(function(d) { return xScale(d.date); })
+							.y(function(d) { return yScale(d.MS); });
+				
+				//Create SVG element
+				var svg = d3.select("#chartArea")
+							.append("svg")
+							.attr("width", w)
+							.attr("height", h);
+				
+				svg.append("path")
+					.datum(dataset)
+					.attr("class", "line")
+					.attr("d", line);
+					
+				svg.append("path")
+					.datum(dataset)
+					.attr("class", "mvAverage")
+					.attr("d", line2);
+				svg.append("path")
+					.datum(dataset)
+					.attr("class", "mvStd")
+					.attr("d", line3);
+       
+				svg.selectAll('circle')
+				   .data(dataset.filter(function(d) {return d.Type > 0}))
+				   .enter()
+				   .append('circle')
+				   .attr("cx",function(d) { return xScale(d.date);})
+				   .attr("cy",function(d) { return yScale(d.amount); })
+				   .attr("r", 3)
+				   .attr("fill","red");
+				svg.append("line").attr("x1",w-87).attr("y1",30).attr("x2", w-80).attr("y2", 30).attr("stroke-width", 1).attr("stroke", "grey")
+				svg.append("line").attr("x1",w-87).attr("y1",40).attr("x2", w-80).attr("y2", 40).attr("stroke-width", 1).attr("stroke", "teal")
+				svg.append("line").attr("x1",w-87).attr("y1",50).attr("x2", w-80).attr("y2", 50).attr("stroke-width", 1).attr("stroke", "orange")
+				svg.append("circle").attr("cx",w-84).attr("cy",60).attr("r", 3).style("fill", "red")
+				svg.append("text").attr("x", w-70).attr("y", 30).text("Total Ridership").style("font-size", "8px").attr("alignment-baseline","middle")
+				svg.append("text").attr("x", w-70).attr("y", 40).text("Moving Average").style("font-size", "8px").attr("alignment-baseline","middle")  
+				svg.append("text").attr("x", w-70).attr("y", 50).text("Moving Std ").style("font-size", "8px").attr("alignment-baseline","middle")				
+				svg.append("text").attr("x", w-70).attr("y", 60).text("Events").style("font-size", "8px").attr("alignment-baseline","middle")
+				
+
+				//Create axes
+				svg.append("g")
+					.attr("class", "axis")
+					.attr("transform", "translate(0," + (h - padding) + ")")
+					.call(xAxis);
+
+				svg.append("g")
+					.attr("class", "axis")
+					.attr("transform", "translate(" + padding + ",0)")
+					.call(yAxis);
+				
+					
+				svg.append("text")
+				  .attr("transform", "rotate(-90)")
+				  .attr("y", 5)
+				  .attr("x",-180)
+				  .attr("dy", "1em")
+				  .style("text-anchor", "middle")
+				  .text("Total Ridership")
+				  .attr("fill","black")
+				
+
+
+			});	
+			var parseTime2 = d3.timeParse("%m/%d/%Y");
+			var DateCoverter2 = function(d) {
+				return {
+					date: parseTime2(d.date),  //Make a new Date object for each year + month
+					end_id: d.end_id,
+					amount: parseFloat(d.amount),//Convert from string to float
+				};
+			}
+			d3.csv('Chicago_inflow.csv',DateCoverter2,function(data)
+			{
+			var nValue = '01/01/2015'
+			//var parseTime3 = d3.timeParse("%Y-%m-%d");
+			var date = parseTime2(nValue);
+			var dataset = data.filter(function(d) {return d.date.getTime() === date.getTime();});
+			var w = document.getElementById('distArea').clientWidth -40;
+			var h = w  - 40;
+			var padding = 20
+			var svg = d3.select("#distArea")
+						.append("svg")
+						.attr("width", w+80)
+						.attr("height", h+60)
+						.attr("class","Area")
+			    var projection = d3.geoMercator()
+								           .translate([900,1300])
+								           .center([-87, 41])
+								           .scale(50000)
+				var path = d3.geoPath()
+							 .projection(projection)
+			    d3.json("Chicago.geojson", function(json2) {
+				svg.selectAll("path")
+					   .data(json2.features)
+					   .enter()
+					   .append("path")
+					   .attr("d", path)
+					   .attr("class", "boundary")
+                       .attr("fill","white")
+					   .attr("opacity",0.2)
+				
+				
+				});
+			d3.json("Chicago-2.json", function(json) {
+				for (var i = 0; i < dataset.length; i++) {
+				   
+						var endId = dataset[i].end_id;				//Grab state name
+						var amount = parseFloat(dataset[i].amount);	//Grab data value, and convert from string to float
+				        //var projection = d3.geoMercator()
+								           //.translate([900,1300])
+								           //.center([-87, 41])
+								           //.scale(50000)
+										   //.translate([w/2,h/2])
+										   //.scale(10000)
+						
+						
+						
+						  
+						//Find the corresponding state inside the GeoJSON
+						var key = function(d) {
+							return d.properties.stop_name;
+						};
+						for (var j = 0; j < json.features.length; j++) {
+						
+							var jsonId = json.features[j].properties.stop_name;
+				
+							if (parseFloat(endId) == parseFloat(jsonId)) {
+						
+								//Copy the data value into the JSON
+								json.features[j].properties.value = amount;
+								//Stop looking through the JSON
+								console.log("equal")
+								break;
+								
+							}
+						}		
+					}
+					console.log(json);
+		
+		var	circles = svg.selectAll("circle")
+					.data(json.features,key)
+					
+			 circles.enter()
+					.append("circle")
+					.attr("cx", function(d) {
+							   return projection([d.geometry.coordinates[0],d.geometry.coordinates[1]])[0];
+						   })
+					.attr("cy", function(d) {
+							   return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
+						   })
+					.attr("r", function(d) {
+					            if (d.properties.value){
+								return Math.sqrt(parseInt(d.properties.value) * 0.04);
+								}
+								else {return 1;}
+						   })
+					.style("fill","blue")
+					.style("stroke", "gray")
+					.style("stroke-width", 0.25)
+					.style("opacity", 1)
+					.append("title")			//Simple tooltip
+					.text(function(d) {
+								return "Station: " + d.properties.stop_name + " Amount: " + d.properties.value;
+						   });
+						   
+						   })
+			d3.select("#dateId").on("input", function() {
+					var parseTime3 = d3.timeParse("%Y-%m-%d");
+					var date = parseTime3(this.value);
+					console.log(date);
+					var dataset = data.filter(function(d) {return d.date.getTime() === date.getTime();});
+					var w = document.getElementById('distArea').clientWidth -40;
+					var h = w  - 40;
+					var padding = 20;
+					d3.json("Chicago-2.json", function(json) {
+						for (var i = 0; i < dataset.length; i++) {
+						   
+								var endId = dataset[i].end_id;				//Grab state name
+								var amount = parseFloat(dataset[i].amount);	//Grab data value, and convert from string to float
+								//var projection = d3.geoMercator()
+								           //.translate([900,1300])
+								           //.center([-87, 41])
+								           //.scale(50000)
+								
+								
+								var key = function(d) {
+							return d.properties.stop_name;
+						};//.fitSize([w -40, h -40],json);
+								//Find the corresponding state inside the GeoJSON
+								for (var j = 0; j < json.features.length; j++) {
+								
+									var jsonId = json.features[j].properties.stop_name;
+						
+									if (parseFloat(endId) == parseFloat(jsonId)) {
+								
+										//Copy the data value into the JSON
+										json.features[j].properties.value = amount;
+										
+										//Stop looking through the JSON
+										break;
+										
+									}
+								}
+					}		
+				var	circles = svg.selectAll("circle")
+							.data(json.features,key)
+							.attr("r", function(d) {
+							if(d.properties.value){
+								return Math.sqrt(parseInt(d.properties.value) * 0.04);}
+								else {return 1;}
+						   })
+							.style("fill","blue")
+							.style("opacity","1")
+							.select("title")
+							.text(function(d) {
+								return "Station: " + d.properties.stop_name + " Amount: " + d.properties.value;
+						   });
+			  
+							  
+					 
+								   
+					
+					
+					
+					});
+				
+				});
+				
+				
+				});
+				
+				var DateCoverter3 = function(d) {
+				return {
+					date: parseTime2(d.date),  //Make a new Date object for each year + month
+					start_id: d.start_id,
+					amount: parseFloat(d.amount),//Convert from string to float
+				};
+			}
+			d3.csv('Chicago_outflow.csv',DateCoverter3,function(data)
+			{
+			var nValue = '2015-01-01'
+			var parseTime3 = d3.timeParse("%Y-%m-%d");
+			var date = parseTime3(nValue);
+			var dataset = data.filter(function(d) {return d.date.getTime() === date.getTime();});
+			console.log(dataset)
+			var w = document.getElementById('distArea2').clientWidth -40;
+			var h = w  - 40;
+			var padding = 20
+			var svg = d3.select("#distArea2")
+						.append("svg")
+						.attr("width", w+80)
+						.attr("height", h+60)
+						.attr("class","Area")
+			var projection = d3.geoMercator()
+								           .translate([900,1300])
+								           .center([-87, 41])
+								           .scale(50000)
+			var path = d3.geoPath()
+							 .projection(projection)
+			d3.json("Chicago.geojson", function(json) {
+				svg.selectAll("path")
+					   .data(json.features)
+					   .enter()
+					   .append("path")
+					   .attr("d", path)
+					   .attr("class", "boundary")
+					   .style("fill","white")
+					   .style("opacity",0.2)
+				
+				
+				});
+			d3.json("Chicago-2.json", function(json) {
+				for (var i = 0; i < dataset.length; i++) {
+				   
+						var startId = dataset[i].start_id;				//Grab state name
+						var amount = parseFloat(dataset[i].amount);	//Grab data value, and convert from string to float
+				        //var projection = d3.geoMercator()
+								           //.translate([900,1300])
+								           //.center([-87, 41])
+								           //.scale(50000)
+						
+						
+						
+						  
+						//Find the corresponding state inside the GeoJSON
+						var key = function(d) {
+							return d.properties.stop_name;
+						};
+						for (var j = 0; j < json.features.length; j++) {
+						
+							var jsonId = json.features[j].properties.stop_name;
+				
+							if (parseFloat(startId) == parseFloat(jsonId)) {
+						
+								//Copy the data value into the JSON
+								json.features[j].properties.value = amount;
+								
+								//Stop looking through the JSON
+								break;
+								
+							}
+						}		
+					}
+					console.log(json);
+		var	circles = svg.selectAll("circle")
+					.data(json.features,key)
+					
+			 circles.enter()
+					.append("circle")
+					.attr("cx", function(d) {
+							   return projection([d.geometry.coordinates[0],d.geometry.coordinates[1]])[0];
+						   })
+					.attr("cy", function(d) {
+							   return projection([d.geometry.coordinates[0], d.geometry.coordinates[1]])[1];
+						   })
+					.attr("r", function(d) {
+					             if(d.properties.value){
+								return Math.sqrt(parseInt(d.properties.value) * 0.04);}
+								else {return 1;}
+						   })
+					.style("fill","blue")
+					.style("stroke", "gray")
+					.style("stroke-width", 0.25)
+					.append("title")			//Simple tooltip
+					.text(function(d) {
+								return "Station: " + d.properties.stop_name + " Amount: " + d.properties.value;
+						   });
+						   
+						   })
+			d3.select("#dateId2").on("input", function() {
+					var parseTime3 = d3.timeParse("%Y-%m-%d");
+					var date = parseTime3(this.value);
+					console.log(date);
+					var dataset = data.filter(function(d) {return d.date.getTime() === date.getTime();});
+					var w = document.getElementById('distArea2').clientWidth -40;
+					var h = w  - 40;
+					var padding = 20;
+					d3.json("Chicago-2.json", function(json) {
+						for (var i = 0; i < dataset.length; i++) {
+						   
+								var startId = dataset[i].start_id;				//Grab state name
+								var amount = parseFloat(dataset[i].amount);	//Grab data value, and convert from string to float
+								//var projection = d3.geoMercator()
+								           //.translate([900,1300])
+								           //.center([-87, 41])
+								           //.scale(50000)
+								
+								var key = function(d) {
+							return d.properties.stop_name;
+						};//.fitSize([w -40, h -40],json);
+								//Find the corresponding state inside the GeoJSON
+								for (var j = 0; j < json.features.length; j++) {
+								
+									var jsonId = json.features[j].properties.stop_name;
+						
+									if (parseFloat(startId) == parseFloat(jsonId)) {
+								
+										//Copy the data value into the JSON
+										json.features[j].properties.value = amount;
+										
+										//Stop looking through the JSON
+										break;
+										
+									}
+								}		
+							}
+			   var	circles = svg.selectAll("circle")
+							.data(json.features,key)
+							.attr("r", function(d) {
+							    if(d.properties.value)
+								return Math.sqrt(parseInt(d.properties.value) * 0.04);
+								else {return 1;}
+						   })
+							.style("fill","blue")
+							.select("title")
+							.text(function(d) {
+								return "Station: " + d.properties.stop_name + " Amount: " + d.properties.value;
+						   });
+			  
+							  
+					 
+								   
+					
+					
+					
+					});
+				
+				});
+				});
+		    
+		
+			
+			
+			
+			
+		</script>
+</body>
+</html>
