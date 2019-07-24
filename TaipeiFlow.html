@@ -385,9 +385,9 @@
 								var endId = dataset[i].end_id;				//Grab state name
 								var amount = parseFloat(dataset[i].amount);	//Grab data value, and convert from string to float
 								var projection = d3.geoMercator()
-										   .translate([-1000,550])
-										   .center([121, 25])
-										   .scale(150000)
+										   .translate([-750,400])
+								                   .center([121, 25])
+								                   .scale(110000)
 								
 								var key = function(d) {
 							return d.properties.stop_id;
