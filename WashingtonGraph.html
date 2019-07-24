@@ -322,7 +322,7 @@
     var line2 = d3.lineRadial()
     		.angle(function(d) { return x2(d.Component); })
     		.radius(function(d) { return y2(d.Value); });
-    d3.csv("https://raw.githubusercontent.com/jzhou60/Capstone-Website/master/data/DCAutoEncoder2.csv" ,function(d) {
+    d3.csv("https://raw.githubusercontent.com/jzhou60/Capstone-Website/master/data/DCAutoencoder2.csv" ,function(d) {
       d.Date = parseTime(d.Date);
       d.Component = d.Component;
 	  d.Value = +d.Value;
