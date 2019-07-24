@@ -317,9 +317,9 @@
 						.attr("class","Area")
 			var projection = d3.geoMercator()
 						                   //.fitSize([w, h], json.features)
-								           .translate([w/2+1200,h/2+1150])
+								           .translate([w/2+1000,h/2+1150])
 								           .center([-73,40])
-								           .scale(65000)
+								           .scale(60000)
 			var path = d3.geoPath()
 							 .projection(projection)
 			d3.json("https://raw.githubusercontent.com/jzhou60/Capstone-Website/master/data/NYCTaxiZones.json", function(json) {
@@ -482,9 +482,9 @@
 						.attr("class","Area")
 			var projection = d3.geoMercator()
 						                   //.fitSize([w, h], json.features)
-								           .translate([w/2+1200,h/2+1150])
+								           .translate([w/2+1000,h/2+1150])
 								           .center([-73,40])
-								           .scale(65000)
+								           .scale(60000)
 			var path = d3.geoPath()
 							 .projection(projection)
 			d3.json("https://raw.githubusercontent.com/jzhou60/Capstone-Website/master/data/NYCTaxiZones.json", function(json) {
