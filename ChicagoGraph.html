@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="d3-scale-radial.js"></script>
+  <style>
+    text {
+      font-size: 14px;
+      font-family: monospace;
+    }
+  #distArea {margin-left:40px;
+                 margin-top:50px;
+             margin-bottom:10px}
+  #distArea2 {
+                 margin-top:50px;
+             }
+  #dateId {margin-left:60px}
+  #dateId2 {margin-left:60px}
+  h4 {
+      color: grey;
+      margin-left : 60px;
+	  text-transform: uppercase;
+    }
+    
+  #dateId3 {margin-left:60px}
+  .line {
+        fill: none;
+        stroke: grey;
+        stroke-width: 0.5;
+      }
+ 
+    text {
+  font-family: sans-serif;
+  font-size: 20 px;
+  font-weight: bold;
+} 
+h1{
+				color: #0f2862; font-family: arial, sans-serif;
+				font-size: 100px; font-weight: 800; line-height: 72px; 
+				margin: 10 20 40px; text-align: center;
+	}
+	p {color:black;font-family: arial, sans-serif;font-size: 20px;text-align: center;margin: 0 0 24px }
+	#plotHeading,#plotHeading2,#plotHeading3{margin-top:55px}
+	h2 {color:orange
+	}
+	#graphArea{margin-top:10px}
+  </style>
+</head>
+
+<body>
+<div class="container-fluid">
+    <div class="row">
+			  <div class="col-sm-12" id="distHeading">
+			  <h1 align="center">Chicago Analysis</h1>
+			  </div>
+	  </div>
+    <div class="row">
+        <div class="col-sm-6" id="plotHeading">
+        <h2 align="center">PCA Radial Chart</h2>
+        </div>
+        <div class="col-sm-6" id="plotHeading2">
+        <h2 align="left"> Autoencoder Radial Chart</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6" id="distDate">
+        <h4 align="left">Select Date </h4>
+        <input type="date" id="dateId" name="dateName"
+                 value="2015-01-01"
+                 min="2015-01-01" max="2016-12-31" align="right">
+        </div>
+        <div class="col-sm-6" id="distDate2">
+        <h4 align="left"> Select Date</h4>
+        <input type="date" id="dateId2" name="dateName2"
+                 value="2015-01-01"
+                 min="2015-01-01" max="2016-12-31" align="right">
+        </div>
+    </div>
+     <div class="row">
+        <div class="col-sm-5" id="distArea">
+         
+        </div>
+        
+        <div class="col-sm-6" id="distArea2">
+        </div>
+    
+          
+            
+      
+      
+    </div>
+	   <div class="row">
+      <div class="col-sm-5" id="distAreaLabel">
+        <p>Figure 1: The radial chart shows the results of dimensionality reduction using PCA. </p>
+      </div>
+	  <div class = "col-sm-1">
+	  </div>
+	  <div class="col-sm-5" id="distArea2Label">
+	  <p>Figure 2: The radial chart plots shows the results of dimensionality reduction using an autoencoder. </p>
+      </div>
+	  
+      	  
+            
+			
+			
+	  </div>
+     <div class="col-sm-12">
+            <h2 align="center" id ="plotHeading3">Communities Network Graph</h2>
+        <h4 align="left">Select Date </h4>
+      <input type="date" id="dateId3" name="dateName3"
+                     value="2015-01-01"
+                     min="2015-01-01" max="2016-12-31" align="right">
+                     
+            </div>
+            
+  <div class="col-sm-12">
+  <div class="col-sm-12" id="graphArea">
+        
+         
+        </div>  
+   
+  </div>
+  <div class="col-sm-12">
+	<p>Figure 3: The network graph where the nodes are the communities detected in Chicago and the edges represent the ridership between these communities.The color of the edges change with  ridership amount.</p>
+	
+   
+	</div>
+    
+    </div>
+
+  <script>
+    var margin = {top: 30, right: 10, bottom: 30, left: 10};
+    
+    //var width = 960 - margin.left - margin.right,
+      //height = 500 - margin.top - margin.bottom;
+    var width = document.getElementById('distArea').clientWidth - margin.left - margin.right;
+  var height = 500 - margin.top - margin.bottom;
+    var svg = d3.select("#distArea").append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    
+    var g = svg.append("g")
+      .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+    
+    var innerRadius = 100,
+        outerRadius = Math.min(width, height) / 2 ;
+        axisRadius = outerRadius+30
+    var parseTime = d3.timeParse("%Y-%m-%d");
+    
+    //var formatMonth = d3.timeFormat("%b");
+    
+    var fullCircle = 2 * Math.PI;
+    
+    var x = d3.scaleBand()
+        .range([0, fullCircle]);
+    
+    var y = d3.scaleRadial()
+        .range([innerRadius, outerRadius]);
+    
+    var line = d3.lineRadial()
+        .angle(function(d) { return x(d.Component); })
+        .radius(function(d) { return y(d.Value); });
+    d3.csv("https://raw.githubusercontent.com/jzhou60/Capstone-Website/master/data/ChicagoPCA2.csv" ,function(d) {
+      d.Date = parseTime(d.Date);
+      d.Component = d.Component;
+    d.Value = +d.Value;
+      return d;
+    }, function(error, data) {
+      if (error) throw error;
+      
+      x.domain(['Component1','Component2','Component3','Component4','Component5','Component6','Component7','Component8','Component9','Component10','Component11','Component12','Component13','Component14','Component15','Component16']);
+      y.domain(d3.extent(data, function(d) { return d.Value; }));
+    var date = parseTime('2015-01-01');
+      dataset = data.filter(function(d) {return d.Date.getTime() === date.getTime();});
+    console.log(dataset)
+      var linePlot = g.append("path")
+        .datum(dataset)
+        .attr("fill", "none")
+        .attr("stroke", "#4099ff")
+        .attr("d", line)
+    .attr("class","path1");
+      var yAxis = g.append("g")
+          .attr("text-anchor", "middle");
+
+      var yTick = yAxis
+        .selectAll("g")
+        .data(y.ticks(5))
+        .enter().append("g");
+      
+      yTick.append("circle")
+          .attr("fill", "none")
+          .attr("stroke", "black")
+          .attr("opacity", 0.2)
+          .attr("r", y);
+      
+      yAxis.append("circle")
+          .attr("fill", "none")
+          .attr("stroke", "black")
+          .attr("opacity", 0.4)
+          .attr("r", function() { return y(y.domain()[1])+30});
+      
+      var labels = yTick.append("text")
+          .attr("y", function(d) { return -y(d); })
+          .attr("dy", "0.35em")
+          .attr("fill", "none")
+          .attr("stroke", "#fff")
+          .attr("stroke-width", 5)
+          .attr("stroke-linejoin", "round")
+          .text(function(d) { return d; });
+
+        yTick.append("text")
+        .attr("y", function(d) { return -y(d); })
+        .attr("dy", "0.35em")
+        .text(function(d) { return  d; });
+      
+      var xAxis = g.append("g");
+      var ticks = x.domain()
+
+      var xTick = xAxis
+        .selectAll("g")
+        .data(ticks)
+        .enter().append("g")
+          .attr("text-anchor", "middle")
+          .attr("transform", function(d) {
+            return "rotate(" + ((x(d)) * 180 / Math.PI - 90) + ")translate(" + axisRadius + ",0)";
+          });
+      
+      xTick.append("line")
+        .attr("x2", -5)
+        .attr("stroke", "#000");
+
+      xTick.append("text")
+        .attr("transform", function(d) { 
+        var angle = x(d);
+        return ((angle < Math.PI / 2) || (angle > (Math.PI * 3 / 2))) ? "rotate(90)translate(0,22)" : "rotate(-90)translate(0, -15)"; })
+        .text(function(d) { 
+          return d;
+        })
+        .style("font-size", 10)
+        .attr("opacity", 0.6)
+      
+      var title = g.append("g")
+          .attr("class", "title")
+          .append("text")
+          .attr("dy", "-0.2em")
+          .attr("text-anchor", "middle")
+          .text("Radial Chart")
+      
+      
+      var lineLength = linePlot.node().getTotalLength();
+      
+      linePlot
+        .attr("stroke-dasharray", lineLength + " " + lineLength)
+        .attr("stroke-dashoffset", -lineLength)
+        .transition()
+          .duration(2000)
+          .ease(d3.easeLinear)
+          .attr("stroke-dashoffset", 0);
+    d3.select("#dateId").on("input", function() { 
+    var parseTime3 = d3.timeParse("%Y-%m-%d");
+    var date = parseTime3(this.value);
+    dataset = data.filter(function(d) {return d.Date.getTime() === date.getTime();});
+      var linePlot2 = d3.select('.path1')
+        .datum(dataset)
+        .attr("fill", "none")
+        .attr("stroke", "#4099ff")
+        .attr("d", line);
+      
+      var lineLength = linePlot2.node().getTotalLength();
+      
+      linePlot
+        .attr("stroke-dasharray", lineLength + " " + lineLength)
+        .attr("stroke-dashoffset", -lineLength)
+        .transition()
+          .duration(2000)
+          .ease(d3.easeLinear)
+          .attr("stroke-dashoffset", 0);
+    
+    });
+      
+    });
+  
+  var margin2 = {top: 20, right: 10, bottom: 20, left: 10};
+    
+    //var width = 960 - margin.left - margin.right,
+      //height = 500 - margin.top - margin.bottom;
+    var width2 = document.getElementById('distArea2').clientWidth - margin2.left - margin2.right;
+  var height2 = 500 - 40
+    var svg2 = d3.select("#distArea2").append("svg")
+      .attr("width", width2 + margin.left + margin.right)
+        .attr("height", height2 + margin.top + margin.bottom)
+      .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    
+    var g2 = svg2.append("g")
+      .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+    
+    var innerRadius2 = 80,
+        outerRadius2 = 220;
+        axisRadius2 = outerRadius2+30
+    var parseTime = d3.timeParse("%Y-%m-%d");
+    
+    //var formatMonth = d3.timeFormat("%b");
+    
+    var fullCircle = 2 * Math.PI;
+    
+    var x2 = d3.scaleBand()
+        .range([0, fullCircle]);
+    
+    var y2 = d3.scaleRadial()
+        .range([innerRadius2, outerRadius2]);
+    
+    var line2 = d3.lineRadial()
+        .angle(function(d) { return x2(d.Component); })
+        .radius(function(d) { return y2(d.Value); });
+    d3.csv("https://raw.githubusercontent.com/jzhou60/Capstone-Website/master/data/ChicagoAutoencoder2.csv" ,function(d) {
+      d.Date = parseTime(d.Date);
+      d.Component = d.Component;
+    d.Value = +d.Value;
+      return d;
+    }, function(error, data2) {
+      if (error) throw error;
+      
+      x2.domain(['Component1','Component2','Component3','Component4','Component5','Component6','Component7','Component8','Component9','Component10','Component11','Component12','Component13','Component14','Component15','Component16']);
+      //y2.domain(d3.extent(data2, function(d) { return d.Value; }));
+    y2.domain([d3.min(data2,function(d){return d.Value}),d3.max(data2,function(d){return d.Value})]);
+    var date = parseTime('2015-01-01');
+      dataset3 = data2.filter(function(d) {return d.Date.getTime() === date.getTime();});
+    console.log(dataset3)
+      var linePlot = g2.append("path")
+        .datum(dataset3)
+        .attr("fill", "none")
+        .attr("stroke", "#4099ff")
+        .attr("d", line2)
+    .attr("class",'path2');
+      var yAxis2 = g2.append("g")
+          .attr("text-anchor", "middle");
+
+      var yTick2 = yAxis2
+        .selectAll("g")
+        .data(y2.ticks(8))
+        .enter().append("g");
+      
+      yTick2.append("circle")
+          .attr("fill", "none")
+          .attr("stroke", "black")
+          .attr("opacity", 0.2)
+          .attr("r", y2);
+      
+      yAxis2.append("circle")
+          .attr("fill", "none")
+          .attr("stroke", "black")
+          .attr("opacity", 0.4)
+          .attr("r", function() { return y2(y2.domain()[1])+30});
+      
+      var labels = yTick2.append("text")
+          .attr("y", function(d) { return -y2(d); })
+          .attr("dy", "0.35em")
+          .attr("fill", "none")
+          .attr("stroke", "#fff")
+          .attr("stroke-width", 5)
+          .attr("stroke-linejoin", "round")
+          .text(function(d) { return d; });
+
+        yTick2.append("text")
+        .attr("y", function(d) { return -y2(d); })
+        .attr("dy", "0.35em")
+        .text(function(d) { return  d; });
+      
+      var xAxis2 = g2.append("g");
+      var ticks2 = x2.domain()
+
+      var xTick2 = xAxis2
+        .selectAll("g")
+        .data(ticks2)
+        .enter().append("g")
+          .attr("text-anchor", "middle")
+          .attr("transform", function(d) {
+            return "rotate(" + ((x2(d)) * 180 / Math.PI - 90) + ")translate(" + axisRadius2 + ",0)";
+          });
+      
+      xTick2.append("line")
+        .attr("x2", -5)
+        .attr("stroke", "#000");
+
+      xTick2.append("text")
+        .attr("transform", function(d) { 
+        var angle = x2(d);
+        return ((angle < Math.PI / 2) || (angle > (Math.PI * 3 / 2))) ? "rotate(90)translate(0,22)" : "rotate(-90)translate(0, -15)"; })
+        .text(function(d) { 
+          return d;
+        })
+        .style("font-size", 10)
+        .attr("opacity", 0.6)
+      
+      var title = g2.append("g")
+          .attr("class", "title")
+          .append("text")
+          .attr("dy", "-0.2em")
+          .attr("text-anchor", "middle")
+          .text("Radial Chart")
+      
+      
+      var lineLength = linePlot.node().getTotalLength();
+      
+      linePlot
+        .attr("stroke-dasharray", lineLength + " " + lineLength)
+        .attr("stroke-dashoffset", -lineLength)
+        .transition()
+          .duration(2000)
+          .ease(d3.easeLinear)
+          .attr("stroke-dashoffset", 0);
+    d3.select("#dateId2").on("input", function() { 
+    var parseTime3 = d3.timeParse("%Y-%m-%d");
+    var date = parseTime3(this.value);
+    dataset4 = data2.filter(function(d) {return d.Date.getTime() === date.getTime();});
+      var linePlot2 = d3.select('.path2')
+        .datum(dataset4)
+        .attr("fill", "none")
+        .attr("stroke", "#4099ff")
+        .attr("d", line2);
+      
+      var lineLength = linePlot2.node().getTotalLength();
+      
+      linePlot
+        .attr("stroke-dasharray", lineLength + " " + lineLength)
+        .attr("stroke-dashoffset", -lineLength)
+        .transition()
+          .duration(2000)
+          .ease(d3.easeLinear)
+          .attr("stroke-dashoffset", 0);
+    
+    });
+      
+    });
+  var w = document.getElementById('graphArea').clientWidth - margin.left - margin.right;
+  var h = 1000
+  var parseTime3 = d3.timeParse("%Y-%m-%d");
+    var DateCoverter3 = function(d) {
+        return {
+          date: parseTime3(d.date),  //Make a new Date object for each year + month
+          start_id: d.start_id,
+          end_id: d.end_id,
+          amount: parseFloat(d.amount)
+        };
+      }
+    d3.csv('https://raw.githubusercontent.com/jzhou60/Capstone-Website/master/data/ChicagoDateWiseComm.csv',DateCoverter3,function(error,data){
+    if (error) throw error;
+    var date = parseTime('2015-01-01');
+    var fdata = data.filter(function(d) {return d.date.getTime() === date.getTime();});
+    var values = data.map(function (d) {return  d.start_id});
+    var values2 = data.map(function(d) {return d.end_id});;
+    var set1 = new Set(values.concat(values2));
+    var dataset ={nodes:[],edges:[]};
+    set1.forEach(function(d) {dataset.nodes.push({name:d})})
+    
+    for (var i = 0; i < fdata.length; i++) {
+    dataset.edges.push({source:fdata[i].start_id,
+    target:fdata[i].end_id,
+    amount:fdata[i].amount})
+         }
+     
+     console.log(dataset)
+     var force = d3.forceSimulation(dataset.nodes)
+              .force("charge", d3.forceManyBody())
+              .force("link", d3.forceLink(dataset.edges).id(function(d,i) {
+         return d.name;
+     }).distance(500))
+              .force("center", d3.forceCenter().x(w/2).y(h/2));
+
+
+      //Create SVG element
+    var svg = d3.select("#graphArea")
+            .append("svg")
+            .attr("width", w)
+            .attr("height", h);
+      
+      //Create edges as lines
+      var edges = svg.selectAll("line")
+        .data(dataset.edges)
+        .enter()
+        .append("line")
+        .style("stroke", function(d){
+        if (d.amount < 500){
+        return "yellow";
+         }
+         else if (d.amount >= 500 & d.amount <= 1000){
+         return "blue";}
+         else {return "green"}})
+        .style("stroke-width", 2)
+        .attr("class","edge");
+      
+      //Create nodes as circles
+      var node = svg.append("g")
+            .attr("class", "nodes")
+          .selectAll("g")
+          .data(dataset.nodes)
+          .enter().append("g")
+          
+      var circles = node.append("circle")
+            .attr("r", 15)
+            .attr("fill","red")
+
+      //Add a simple tooltip
+      var labels = node.append("text")
+                .text(function(d) {
+                return d.name;
+                })
+                .attr('x', 6)
+                .attr('y', 3)
+         
+      edges.append("title")
+           .text(function(d) {
+          return d.amount;
+         })
+         
+      
+      
+      //Every time the simulation "ticks", this will be called
+      force.on("tick", function() {
+
+        edges.attr("x1", function(d) { return d.source.x; })
+           .attr("y1", function(d) { return d.source.y; })
+           .attr("x2", function(d) { return d.target.x; })
+           .attr("y2", function(d) { return d.target.y; });
+      
+        //circles.attr("cx", function(d) { return d.x; })
+           //.attr("cy", function(d) { return d.y; });
+           
+          //label.attr("x",function(d) { return d.x; })
+              //.attr("y",function(d) { return d.x; });
+        node
+          .attr("transform", function(d) {
+            return "translate(" + d.x + "," + d.y + ")";
+          })
+           
+        
+            
+          
+         
+      
+  
+      });
+      
+      
+
+
+      
+      d3.select("#dateId3").on("input", function() { 
+        var parseTime3 = d3.timeParse("%Y-%m-%d");
+        var date = parseTime3(this.value);
+        var fdata2 = data.filter(function(d) {return d.date.getTime() === date.getTime();});
+        var values = data.map(function (d) {return  d.start_id});
+        var values2 = data.map(function(d) {return d.end_id});;
+          var set2 = new Set(values.concat(values2));
+        var dataset2 ={nodes:[],edges:[]};
+        set2.forEach(function(d) {dataset2.nodes.push({name:d})})
+        
+        for (var i = 0; i < fdata2.length; i++) {
+        dataset2.edges.push({source:fdata2[i].start_id,
+        target:fdata2[i].end_id,
+        amount:fdata2[i].amount})
+          }
+          var force2 = d3.forceSimulation(dataset2.nodes)
+              .force("charge", d3.forceManyBody())
+              .force("link", d3.forceLink(dataset2.edges).id(function(d,i) {
+           return d.name;
+         }).distance(400))
+              .force("center", d3.forceCenter().x(w/2).y(h/2));
+        var edges = d3.selectAll(".edge").data(dataset2.edges)
+        
+        edges.enter()
+        .append("line")
+        .merge(edges)
+        .style("stroke", function(d){
+        if (d.amount < 500){
+        return "yellow";
+         }
+         else if (d.amount >= 500 & d.amount <= 1000){
+         return "blue";}
+         else {return "green"}})
+         .select("title")
+           .text(function(d) {
+          return d.amount;
+         });
+         
+         edges.exit().remove()
+         
+         
+         node.data(dataset2.nodes)
+           .select("text").text(function(d){
+             return d.name;
+           });
+           
+        
+              
+        force2.on("tick", function() {
+
+        edges.attr("x1", function(d) { return d.source.x; })
+           .attr("y1", function(d) { return d.source.y; })
+           .attr("x2", function(d) { return d.target.x; })
+           .attr("y2", function(d) { return d.target.y; });
+           
+        node
+          .attr("transform", function(d) {
+            return "translate(" + d.x + "," + d.y + ")";
+          })
+      
+        //circles.attr("cx", function(d) { return d.x; })
+             //.attr("cy", function(d) { return d.y; });
+        
+           
+        
+           
+      
+  
+      });
+      
+      
+        
+       
+         
+        
+    
+    });
+    
+    // Handmade legend
+//
+//.style("font-size", "15px").attr("class","legend")
+svg.append("rect")
+    .attr("x", w-320)
+    .attr("y", 40)
+    .attr("width", 130)
+    .attr("height", 70)
+	.attr("fill","white")
+    .style("stroke", "black");
+svg.append("circle").attr("cx",w-300).attr("cy",60).attr("r", 6).style("fill", "yellow")
+      svg.append("circle").attr("cx",w-300).attr("cy",75).attr("r", 6).style("fill", "blue")
+      svg.append("circle").attr("cx",w-300).attr("cy",90).attr("r", 6).style("fill", "green")
+      svg.append("text").attr("x", w-280).attr("y", 60).text("<500").style("font-size", "14px").attr("alignment-baseline","middle")  
+      svg.append("text").attr("x", w-280).attr("y", 75).text("500-1000 ").style("font-size", "14px").attr("alignment-baseline","middle")        
+      svg.append("text").attr("x", w-280).attr("y", 90).text(">1000").style("font-size", "14px").attr("alignment-baseline","middle")
+
+  });
+  
+  
+    
+  </script>
+</body>
+</html>
