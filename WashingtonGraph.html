@@ -170,7 +170,7 @@
     var line = d3.lineRadial()
     		.angle(function(d) { return x(d.Component); })
     		.radius(function(d) { return y(d.Value); });
-    d3.csv("DCPCA2.csv" ,function(d) {
+    d3.csv("https://raw.githubusercontent.com/jzhou60/Capstone-Website/master/data/DCPCA2.csv" ,function(d) {
       d.Date = parseTime(d.Date);
       d.Component = d.Component;
 	  d.Value = +d.Value;
@@ -322,7 +322,7 @@
     var line2 = d3.lineRadial()
     		.angle(function(d) { return x2(d.Component); })
     		.radius(function(d) { return y2(d.Value); });
-    d3.csv("DCAutoEncoder2.csv" ,function(d) {
+    d3.csv("https://raw.githubusercontent.com/jzhou60/Capstone-Website/master/data/DCAutoEncoder2.csv" ,function(d) {
       d.Date = parseTime(d.Date);
       d.Component = d.Component;
 	  d.Value = +d.Value;
@@ -453,7 +453,7 @@
 					amount: parseFloat(d.amount)
 				};
 			}
-		d3.csv('DCDateWiseComm.csv',DateCoverter3,function(error,data){
+		d3.csv('https://raw.githubusercontent.com/jzhou60/Capstone-Website/master/data/DCDateWiseComm.csv',DateCoverter3,function(error,data){
 		if (error) throw error;
 		var date = parseTime('2016-01-01');
 		var fdata = data.filter(function(d) {return d.date.getTime() === date.getTime();});
